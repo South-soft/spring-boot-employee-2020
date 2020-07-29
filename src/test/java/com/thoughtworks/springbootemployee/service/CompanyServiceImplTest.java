@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -67,6 +67,17 @@ public class CompanyServiceImplTest {
         CompanyNotFoundException companyNotFoundException = assertThrows(CompanyNotFoundException.class, () -> companyService.getEmployeeUnderCompany(1), "companyNotFound");
         //then
         assertEquals("CompanyNotFoundException", companyNotFoundException.getMessage());
+    }
+
+    @Test
+    public void should_return_1_company_when_add_company_given_1_company() {
+        // given
+        Company company = new Company();
+        when(companyRepository.save(any(Company.class))).thenReturn(company);
+        // when
+        Company addCompany = companyService.addCompany(company);
+        // then
+        assertNotNull(addCompany);
     }
 
 }
