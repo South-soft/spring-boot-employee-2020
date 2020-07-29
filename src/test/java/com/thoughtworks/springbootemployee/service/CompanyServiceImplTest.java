@@ -80,4 +80,15 @@ public class CompanyServiceImplTest {
         assertNotNull(addCompany);
     }
 
+    @Test
+    public void should_return_1_company_when_update_company_given_1_company() {
+        // given
+        Company company = new Company();
+        when(companyRepository.save(any(Company.class))).thenReturn(company);
+        // when
+        Company updateCompany = companyService.updateCompany(company);
+        // then
+        assertNotNull(updateCompany);
+    }
+
 }
