@@ -13,6 +13,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -103,5 +106,17 @@ public class EmployeeServiceTest {
         Employee updateEmployee = employeeService.updateEmployee(employeeDto);
         //then
         verify(employeeRepository,times(1)).save(any(Employee.class));
+    }
+
+    @Test
+    public void should_return_employee_when_employee_by_gender_given_male() {
+        //given
+        Employee employee = new Employee();
+        employee.setGender("male");
+        when(employeeRepository.findByGender("male")).thenReturn(Collections.singletonList(employee));
+        //when
+        List<Employee> maleEmployee = employeeService.getEmployeeByGender("male");
+        //then
+        assertEquals(1, maleEmployee.size());
     }
 }
