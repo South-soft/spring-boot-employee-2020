@@ -40,4 +40,23 @@ public class CompanyServiceImplTest {
         // then
         assertEquals(5, companiesByPage.size());
     }
+
+    @Test
+    void should_return_1_company_when_get_companies_by_page_given_page_2_and_pageSize_5_and_6_companies() {
+        // given
+        List<Company> companies = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            Company company = new Company();
+            company.setId(i);
+            companies.add(company);
+        }
+
+        when(companyRepository.findAll()).thenReturn(companies);
+
+        // when
+        List<Company> companiesByPage = companyService.getCompaniesByPage(2, 5);
+
+        // then
+        assertEquals(1, companiesByPage.size());
+    }
 }
