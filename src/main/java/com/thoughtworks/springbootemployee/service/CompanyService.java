@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CompanyService {
@@ -14,6 +15,6 @@ public class CompanyService {
     CompanyRepository companyRepository;
 
     public List<Company> getCompaniesByPage(int page, int pageSize) {
-        return companyRepository.findAll();
+        return companyRepository.findAll().stream().skip((page -1) * pageSize).limit(pageSize).collect(Collectors.toList());
     }
 }

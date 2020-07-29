@@ -35,7 +35,7 @@ public class CompanyServiceImplTest {
         when(companyRepository.findAll()).thenReturn(companies);
 
         // when
-        List<Company> companiesByPage = companyService.getCompaniesByPage(5, 6);
+        List<Company> companiesByPage = companyService.getCompaniesByPage(1, 5);
 
         // then
         assertEquals(5, companiesByPage.size());
