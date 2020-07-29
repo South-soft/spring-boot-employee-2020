@@ -28,4 +28,8 @@ public class CompanyService {
     public Company getCompany(int id) {
         return companyRepository.findById(id).orElse(null);
     }
+
+    public void addCompany(Company company) {
+        companyRepository.save(company);
+    }
 }

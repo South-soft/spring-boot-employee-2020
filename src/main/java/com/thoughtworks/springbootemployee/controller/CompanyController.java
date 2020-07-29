@@ -38,4 +38,9 @@ public class CompanyController {
         return companyService.getCompany(id);
     }
 
+    @PostMapping
+    public void addCompany(@RequestBody Company company) {
+
+    }
+
 }
