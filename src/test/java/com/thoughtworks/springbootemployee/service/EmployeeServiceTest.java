@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.dto.EmployeeDto;
 import com.thoughtworks.springbootemployee.entity.Company;
 import com.thoughtworks.springbootemployee.entity.Employee;
 import com.thoughtworks.springbootemployee.exception.CompanyNotFoundException;
@@ -15,12 +16,15 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class EmployeeServiceTest {
     @Mock
     EmployeeRepository employeeRepository;
+    @Mock
+    CompanyRepository companyRepository;
     @InjectMocks
     EmployeeService employeeService;
 
@@ -50,5 +54,21 @@ public class EmployeeServiceTest {
 
         // then
         assertEquals("EmployeeNotFoundException", employeeNotFoundException.getMessage());
+    }
+
+    @Test
+    public void should_return_1_employee_when_add_employee_given_1_employee_dto() {
+        //given
+        EmployeeDto employeeDto = new EmployeeDto();
+        employeeDto.setId(1);
+        employeeDto.setName("LLL");
+        employeeDto.setAge(11);
+        employeeDto.setGender("male");
+        employeeDto.setCompanyId(1);
+        when(companyRepository.findById(anyInt())).thenReturn(Optional.of(new Company()));
+        //when
+        employeeService.addEmployee(employeeDto);
+        //then
+        verify(employeeRepository, times(1)).save(any(Employee.class));
     }
 }
