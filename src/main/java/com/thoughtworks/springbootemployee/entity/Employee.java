@@ -1,10 +1,20 @@
 package com.thoughtworks.springbootemployee.entity;
 
-public class Employee {
+import javax.persistence.*;
 
+@Entity
+@Table(name = "employee")
+public class Employee {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int companyId;
+    private String name;
+    private int age;
     private String gender;
+
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
 
     public int getId() {
         return id;
@@ -18,12 +28,21 @@ public class Employee {
         return gender;
     }
 
-    public int getCompanyId() {
-        return companyId;
+
+    public int getAge() {
+        return age;
     }
 
-    public void setCompanyId(int companyId) {
-        this.companyId = companyId;
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setGender(String gender) {

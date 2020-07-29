@@ -1,54 +1,45 @@
-//package com.thoughtworks.springbootemployee.controller;
-//
-//import com.thoughtworks.springbootemployee.entity.Employee;
-//import com.thoughtworks.springbootemployee.service.EmployeeService;
-//import org.springframework.web.bind.annotation.*;
-//
-//import javax.annotation.Resource;
-//import java.util.List;
-//
-//@RestController
-//@RequestMapping("/employees")
+package com.thoughtworks.springbootemployee.controller;
+
+import com.thoughtworks.springbootemployee.entity.Employee;
+import com.thoughtworks.springbootemployee.service.EmployeeService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/employees")
 public class EmployeeController {
-//
-//    @Resource
-//    EmployeeService employeeService;
-//
+
+    private final EmployeeService employeeService;
+
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
+
+    @GetMapping("/{id}")
+    public Employee getEmployee(@PathVariable int id) {
+        return employeeService.getEmployee(id);
+    }
+
 //    @GetMapping
-//    public List<Employee> getAllEmployees() {
-//        return employeeService.getAllEmployees();
+//    public List<Employee> getAllEmployee() {
+//        return employeeService.getAllEmployee();
 //    }
-//
-//    @GetMapping(params = "gender")
-//    public List<Employee> getEmployeesByGender(@RequestParam String gender) {
-//        return employeeService.getEmployeesByGender(gender);
-//    }
-//
-//    @GetMapping("/{id}")
-//    public Employee getEmployee(@PathVariable int id) {
-//        return employeeService.getEmployee(id);
-//    }
-//
-//    @GetMapping(params = {"page", "pageSize"})
-//    public List<Employee> getCompaniesByPage(
-//            @RequestParam int page,
-//            @RequestParam int pageSize) {
-//        return employeeService.getEmployeesByPage(page, pageSize);
-//    }
-//
-//    @PostMapping
-//    public void addEmployee(@RequestBody Employee employee) {
-//        employeeService.addEmployee(employee);
-//    }
-//
-//    @PutMapping("/{id}")
-//    public void updateEmployee(@PathVariable int id, @RequestBody Employee employee) {
-//        employeeService.updateEmployee(id, employee);
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public void deleteEmployee(@PathVariable int id) {
-//        employeeService.deleteEmployee(id);
-//    }
-//
+
+    @GetMapping(params = "gender")
+    public List<Employee> findByGender(@RequestParam String gender) {
+        return employeeService.getEmployeeByGender(gender);
+    }
+
+    @GetMapping
+    public Page<Employee> getEmployeeByPage(@PageableDefault(size = 1) Pageable pageable, @RequestParam(defaultValue = "false") boolean unpaged) {
+        if (unpaged) {
+            return employeeService.getEmployeeByPage(Pageable.unpaged());
+        }
+        return employeeService.getEmployeeByPage(pageable);
+    }
+
 }

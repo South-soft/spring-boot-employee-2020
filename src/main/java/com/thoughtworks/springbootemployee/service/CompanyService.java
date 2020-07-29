@@ -1,14 +1,15 @@
 package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.entity.Company;
-import com.thoughtworks.springbootemployee.exception.PageException;
+import com.thoughtworks.springbootemployee.entity.Employee;
+import com.thoughtworks.springbootemployee.exception.CompanyNotFoundException;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CompanyService {
@@ -16,10 +17,11 @@ public class CompanyService {
     @Autowired
     CompanyRepository companyRepository;
 
-    public List<Company> getCompaniesByPage(int page, int pageSize) {
-        if (page < 1) {
-            throw new PageException("IndexOutOfBoundsException");
-        }
-        return companyRepository.findAll().stream().skip((page -1) * pageSize).limit(pageSize).collect(Collectors.toList());
+    public Page<Company> getCompaniesByPage(Pageable pageable) {
+        return companyRepository.findAll(pageable);
+    }
+
+    public List<Employee> getEmployeeUnderCompany(int companyId) {
+        return companyRepository.findById(companyId).orElseThrow(CompanyNotFoundException::new).getEmployees();
     }
 }
