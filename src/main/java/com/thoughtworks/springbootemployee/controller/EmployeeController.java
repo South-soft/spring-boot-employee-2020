@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.controller;
 
+import com.thoughtworks.springbootemployee.dto.EmployeeDto;
 import com.thoughtworks.springbootemployee.entity.Employee;
 import com.thoughtworks.springbootemployee.service.EmployeeService;
 import org.springframework.data.domain.Page;
@@ -24,11 +25,6 @@ public class EmployeeController {
         return employeeService.getEmployee(id);
     }
 
-//    @GetMapping
-//    public List<Employee> getAllEmployee() {
-//        return employeeService.getAllEmployee();
-//    }
-
     @GetMapping(params = "gender")
     public List<Employee> findByGender(@RequestParam String gender) {
         return employeeService.getEmployeeByGender(gender);
@@ -42,4 +38,13 @@ public class EmployeeController {
         return employeeService.getEmployeeByPage(pageable);
     }
 
+    @PostMapping
+    public void addEmployee(@RequestBody EmployeeDto employeeDto) {
+         employeeService.addEmployee(employeeDto);
+    }
+
+    @PutMapping("/{id}")
+    public void updateEmployee(@RequestBody EmployeeDto employeeDto) {
+        employeeService.updateEmployee(employeeDto);
+    }
 }
