@@ -1,93 +1,72 @@
-//package com.thoughtworks.springbootemployee.service;
-//
-//import com.thoughtworks.springbootemployee.entity.Company;
-//import com.thoughtworks.springbootemployee.exception.PageException;
-//import com.thoughtworks.springbootemployee.repository.CompanyRepository;
-//import org.junit.jupiter.api.Test;
-//import org.junit.jupiter.api.extension.ExtendWith;
-//import org.mockito.InjectMocks;
-//import org.mockito.Mock;
-//import org.mockito.junit.jupiter.MockitoExtension;
-//
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//import static org.junit.jupiter.api.Assertions.assertEquals;
-//import static org.junit.jupiter.api.Assertions.assertThrows;
-//import static org.mockito.Mockito.when;
-//
-//@ExtendWith(MockitoExtension.class)
-//public class CompanyServiceImplTest {
-//
-//    @Mock
-//    CompanyRepository companyRepository;
-//    @InjectMocks
-//    CompanyService companyService;
-//
-//    @Test
-//    void should_return_5_companies_when_get_companies_by_page_given_page_1_and_pageSize_5_and_6_companies() {
-//        // given
-//        List<Company> companies = new ArrayList<>();
-//        for (int i = 0; i < 6; i++) {
-//            Company company = new Company();
-//            company.setId(i);
-//            companies.add(company);
-//        }
-//
-//        when(companyRepository.findAll()).thenReturn(companies);
-//
-//        // when
-//        List<Company> companiesByPage = companyService.getCompaniesByPage(1, 5);
-//
-//        // then
-//        assertEquals(5, companiesByPage.size());
-//    }
-//
-//    @Test
-//    void should_return_1_company_when_get_companies_by_page_given_page_2_and_pageSize_5_and_6_companies() {
-//        // given
-//        List<Company> companies = new ArrayList<>();
-//        for (int i = 0; i < 6; i++) {
-//            Company company = new Company();
-//            company.setId(i);
-//            companies.add(company);
-//        }
-//
-//        when(companyRepository.findAll()).thenReturn(companies);
-//
-//        // when
-//        List<Company> companiesByPage = companyService.getCompaniesByPage(2, 5);
-//
-//        // then
-//        assertEquals(1, companiesByPage.size());
-//    }
-//
-//    @Test
-//    void should_return_exception_when_get_companies_by_page_given_page_0_and_pageSize_5() {
-//        // given
-//
-//        // when
-//        PageException exception =
-//                assertThrows(PageException.class, () -> companyService.getCompaniesByPage(0, 5), "IndexOutOfBoundsException");
-//
-//        // then
-//        assertEquals("IndexOutOfBoundsException", exception.getMessage());
-//    }
-//
-//    @Test
-//    void should_return_exception_when_get_companies_by_page_given_page_2_and_pageSize_5_and_1_company() {
-//        // given
-//        List<Company> companies = new ArrayList<>();
-//            Company company = new Company();
-//            company.setId(1);
-//            companies.add(company);
-//        when(companyRepository.findAll()).thenReturn(companies);
-//        // when
-//        PageException exception =
-//                assertThrows(PageException.class, () -> companyService.getCompaniesByPage(2, 5), "IndexOutOfBoundsException");
-//
-//        // then
-//        assertEquals("IndexOutOfBoundsException", exception.getMessage());
-//    }
-//
-//}
+package com.thoughtworks.springbootemployee.service;
+
+import com.thoughtworks.springbootemployee.entity.Company;
+import com.thoughtworks.springbootemployee.entity.Employee;
+import com.thoughtworks.springbootemployee.exception.CompanyNotFoundException;
+import com.thoughtworks.springbootemployee.repository.CompanyRepository;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
+
+@ExtendWith(MockitoExtension.class)
+public class CompanyServiceImplTest {
+
+    @Mock
+    CompanyRepository companyRepository;
+    @InjectMocks
+    CompanyService companyService;
+
+    @Test
+    public void should_be_return_2_employees_when_get_employees_under_company_given_2_employees_and_1_company() {
+        //given
+        Company company = new Company();
+        company.setCompanyId(1);
+        company.setEmployees(new ArrayList<>());
+        Employee employee1 = new Employee();
+        Employee employee2 = new Employee();
+        employee1.setCompany(company);
+        employee2.setCompany(company);
+        company.getEmployees().add(employee1);
+        company.getEmployees().add(employee2);
+        when(companyRepository.findById(1)).thenReturn(java.util.Optional.of(company));
+        //when
+        List<Employee> employees = companyService.getEmployeeUnderCompany(company.getCompanyId());
+        //then
+        assertEquals(2, employees.size());
+    }
+
+    @Test
+    public void should_be_return_0_employees_when_get_employees_under_company_given_1_company() {
+        //given
+        Company company = new Company();
+        company.setCompanyId(1);
+        company.setEmployees(new ArrayList<>());
+        when(companyRepository.findById(1)).thenReturn(java.util.Optional.of(company));
+        //when
+        List<Employee> employees = companyService.getEmployeeUnderCompany(company.getCompanyId());
+        //then
+        assertEquals(0, employees.size());
+    }
+
+    @Test
+    public void should_be_return_exception_employees_when_get_employees_under_company_given_no_company() {
+        //given
+        Company company = null;
+        when(companyRepository.findById(1)).thenReturn(Optional.empty());
+        //when
+        CompanyNotFoundException companyNotFoundException = assertThrows(CompanyNotFoundException.class, () -> companyService.getEmployeeUnderCompany(1), "companyNotFound");
+        //then
+        assertEquals("CompanyNotFoundException", companyNotFoundException.getMessage());
+    }
+
+}

@@ -48,4 +48,8 @@ public class Employee {
     public void setGender(String gender) {
         this.gender = gender;
     }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
 }
