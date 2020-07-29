@@ -1,6 +1,7 @@
 package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.entity.Company;
+import com.thoughtworks.springbootemployee.exception.PageException;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -61,21 +63,14 @@ public class CompanyServiceImplTest {
     }
 
     @Test
-    void should_return_0_company_when_get_companies_by_page_given_page_0_and_pageSize_5_and_6_companies() {
+    void should_return_exception_when_get_companies_by_page_given_page_0_and_pageSize_5() {
         // given
-        List<Company> companies = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
-            Company company = new Company();
-            company.setId(i);
-            companies.add(company);
-        }
-
-        when(companyRepository.findAll()).thenReturn(companies);
 
         // when
-        List<Company> companiesByPage = companyService.getCompaniesByPage(0, 5);
+        PageException exception =
+                assertThrows(PageException.class, () -> companyService.getCompaniesByPage(0, 5), "IndexOutOfBoundsException");
 
         // then
-        assertEquals(0, companiesByPage.size());
+        assertEquals("IndexOutOfBoundsException", exception.getMessage());
     }
 }
