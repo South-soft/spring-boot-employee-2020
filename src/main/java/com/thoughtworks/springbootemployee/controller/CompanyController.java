@@ -33,4 +33,9 @@ public class CompanyController {
         return companyService.getEmployeeUnderCompany(id);
     }
 
+    @GetMapping("/{id}")
+    public Company getCompany(@PathVariable int id) {
+        return companyService.getCompany(id);
+    }
+
 }

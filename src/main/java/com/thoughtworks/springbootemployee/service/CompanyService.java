@@ -24,4 +24,8 @@ public class CompanyService {
     public List<Employee> getEmployeeUnderCompany(int companyId) {
         return companyRepository.findById(companyId).orElseThrow(CompanyNotFoundException::new).getEmployees();
     }
+
+    public Company getCompany(int id) {
+        return companyRepository.findById(id).orElse(null);
+    }
 }
