@@ -43,11 +43,11 @@ public class EmployeeService {
          employeeRepository.save(employee);
     }
 
-    public void updateEmployee(EmployeeDto employeeDto) {
+    public Employee updateEmployee(EmployeeDto employeeDto) {
         Company company = companyRepository.findById(employeeDto.getCompanyId()).get();
         Employee employee = employeeDto.to();
         employee.setCompany(company);
-        employeeRepository.save(employee);
+        return employeeRepository.save(employee);
     }
 
 }
