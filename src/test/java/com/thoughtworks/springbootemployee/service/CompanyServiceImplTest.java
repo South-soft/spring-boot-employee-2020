@@ -115,4 +115,18 @@ public class CompanyServiceImplTest {
         assertEquals("CompanyNotFoundException", companyNotFoundException.getMessage());
     }
 
+    @Test
+    public void should_get_1_company_when_get_company_given_company_id_1() {
+        // given
+        int companyId = 1;
+        Company company = new Company();
+        when(companyRepository.findById(companyId)).thenReturn(Optional.of(company));
+
+        // when
+        Company getCompany = companyService.getCompany(companyId);
+
+        // then
+        assertNotNull(getCompany);
+    }
+
 }
