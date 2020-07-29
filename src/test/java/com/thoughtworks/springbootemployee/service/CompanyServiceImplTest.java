@@ -16,7 +16,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CompanyServiceImplTest {
@@ -89,6 +89,16 @@ public class CompanyServiceImplTest {
         Company updateCompany = companyService.updateCompany(company);
         // then
         assertNotNull(updateCompany);
+    }
+
+    @Test
+    public void should_invoke_delete_company_once_when_delete_company_given_company_id_1() {
+        // given
+        int companyId = 1;
+        // when
+        companyService.deleteCompany(companyId);
+        // then
+        verify(companyRepository, times(1)).deleteById(anyInt());
     }
 
 }
