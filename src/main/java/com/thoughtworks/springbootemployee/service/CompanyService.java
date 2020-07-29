@@ -26,7 +26,7 @@ public class CompanyService {
     }
 
     public Company getCompany(int id) {
-        return companyRepository.findById(id).orElse(null);
+        return companyRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
     }
 
     public Company addCompany(Company company) {
