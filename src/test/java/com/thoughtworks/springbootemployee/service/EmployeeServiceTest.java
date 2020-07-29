@@ -43,19 +43,12 @@ public class EmployeeServiceTest {
         // given
         int employeeId = 1;
         Employee employee = new Employee();
-        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employee));
-
-        // when
-
+        when(employeeRepository.findById(employeeId)).thenReturn(Optional.empty());
         // when
         EmployeeNotFoundException employeeNotFoundException
-                = assertThrows(EmployeeNotFoundException.class, () -> employeeService.getEmployee(1), "companyNotFound");
+                = assertThrows(EmployeeNotFoundException.class, () -> employeeService.getEmployee(1), "EmployeeNotFoundException");
 
         // then
         assertEquals("EmployeeNotFoundException", employeeNotFoundException.getMessage());
-        Employee getEmployee = employeeService.getEmployee(employeeId);
-
-        // then
-        assertNotNull(getEmployee);
     }
 }
