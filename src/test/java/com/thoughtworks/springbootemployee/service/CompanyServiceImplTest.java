@@ -101,4 +101,18 @@ public class CompanyServiceImplTest {
         verify(companyRepository, times(1)).deleteById(anyInt());
     }
 
+    @Test
+    public void should_throw_Exception_when_get_company_given_company_id_1() {
+        // given
+        int companyId = 1;
+        when(companyRepository.findById(companyId)).thenReturn(Optional.empty());
+
+        // when
+        CompanyNotFoundException companyNotFoundException
+                = assertThrows(CompanyNotFoundException.class, () -> companyService.getCompany(1), "companyNotFound");
+
+        // then
+        assertEquals("CompanyNotFoundException", companyNotFoundException.getMessage());
+    }
+
 }
