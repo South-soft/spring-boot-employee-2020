@@ -102,7 +102,7 @@ public class CompanyServiceTest {
     }
 
     @Test
-    public void should_throw_Exception_when_get_company_given_company_id_1() {
+    public void should_throw_exception_when_get_company_given_company_id_1() {
         // given
         int companyId = 1;
         when(companyRepository.findById(companyId)).thenReturn(Optional.empty());
