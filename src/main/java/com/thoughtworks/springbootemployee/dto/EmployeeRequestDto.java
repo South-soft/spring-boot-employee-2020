@@ -2,10 +2,14 @@ package com.thoughtworks.springbootemployee.dto;
 
 import com.thoughtworks.springbootemployee.entity.Employee;
 
-public class EmployeeDto {
+import javax.validation.constraints.NotBlank;
+
+public class EmployeeRequestDto {
     private int id;
+    @NotBlank
     private String name;
     private int age;
+    @NotBlank
     private String gender;
     private int companyId;
 

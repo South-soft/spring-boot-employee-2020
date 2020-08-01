@@ -1,6 +1,7 @@
 package com.thoughtworks.springbootemployee.service;
 
-import com.thoughtworks.springbootemployee.dto.EmployeeDto;
+import com.thoughtworks.springbootemployee.dto.EmployeeRequestDto;
+import com.thoughtworks.springbootemployee.dto.EmployeeResponseDto;
 import com.thoughtworks.springbootemployee.entity.Company;
 import com.thoughtworks.springbootemployee.entity.Employee;
 import com.thoughtworks.springbootemployee.exception.CompanyNotFoundException;
@@ -24,8 +25,14 @@ public class EmployeeService {
         this.companyRepository = companyRepository;
     }
 
-    public Employee getEmployee(int id) {
-        return employeeRepository.findById(id).orElseThrow(EmployeeNotFoundException::new);
+    public EmployeeResponseDto getEmployee(int id) {
+        Employee employee = employeeRepository.findById(id).orElseThrow(EmployeeNotFoundException::new);
+        EmployeeResponseDto employeeResponseDTO = new EmployeeResponseDto();
+        employeeResponseDTO.setId(employee.getId());
+        employeeResponseDTO.setGender(employee.getGender());
+        employeeResponseDTO.setName(employee.getName());
+        employeeResponseDTO.setCompanyName(employee.getCompany().getName());
+        return employeeResponseDTO;
     }
 
     public List<Employee> getEmployeeByGender(String gender) {
@@ -36,16 +43,16 @@ public class EmployeeService {
         return employeeRepository.findAll(pageable);
     }
 
-    public void addEmployee(EmployeeDto employeeDto) {
-        Company company = companyRepository.findById(employeeDto.getCompanyId()).orElseThrow(CompanyNotFoundException::new);
-        Employee employee = employeeDto.to();
+    public void addEmployee(EmployeeRequestDto employeeRequestDto) {
+        Company company = companyRepository.findById(employeeRequestDto.getCompanyId()).orElseThrow(CompanyNotFoundException::new);
+        Employee employee = employeeRequestDto.to();
         employee.setCompany(company);
          employeeRepository.save(employee);
     }
 
-    public Employee updateEmployee(EmployeeDto employeeDto) {
-        Company company = companyRepository.findById(employeeDto.getCompanyId()).get();
-        Employee employee = employeeDto.to();
+    public Employee updateEmployee(EmployeeRequestDto employeeRequestDto) {
+        Company company = companyRepository.findById(employeeRequestDto.getCompanyId()).orElseThrow(CompanyNotFoundException::new);
+        Employee employee = employeeRequestDto.to();
         employee.setCompany(company);
         return employeeRepository.save(employee);
     }

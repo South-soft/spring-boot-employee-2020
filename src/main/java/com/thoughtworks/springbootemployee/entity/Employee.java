@@ -1,7 +1,6 @@
 package com.thoughtworks.springbootemployee.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.thoughtworks.springbootemployee.dto.EmployeeDto;
 
 import javax.persistence.*;
 
@@ -54,5 +53,9 @@ public class Employee {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    public Company getCompany() {
+        return company;
     }
 }

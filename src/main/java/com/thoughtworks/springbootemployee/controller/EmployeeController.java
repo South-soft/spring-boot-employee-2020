@@ -1,6 +1,7 @@
 package com.thoughtworks.springbootemployee.controller;
 
-import com.thoughtworks.springbootemployee.dto.EmployeeDto;
+import com.thoughtworks.springbootemployee.dto.EmployeeRequestDto;
+import com.thoughtworks.springbootemployee.dto.EmployeeResponseDto;
 import com.thoughtworks.springbootemployee.entity.Employee;
 import com.thoughtworks.springbootemployee.service.EmployeeService;
 import org.springframework.data.domain.Page;
@@ -8,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -21,7 +23,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public Employee getEmployee(@PathVariable int id) {
+    public EmployeeResponseDto getEmployee(@PathVariable int id) {
         return employeeService.getEmployee(id);
     }
 
@@ -39,12 +41,12 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public void addEmployee(@RequestBody EmployeeDto employeeDto) {
-         employeeService.addEmployee(employeeDto);
+    public void addEmployee(@RequestBody @Valid EmployeeRequestDto employeeRequestDto) {
+         employeeService.addEmployee(employeeRequestDto);
     }
 
     @PutMapping("/{id}")
-    public void updateEmployee(@RequestBody EmployeeDto employeeDto) {
-        employeeService.updateEmployee(employeeDto);
+    public void updateEmployee(@RequestBody EmployeeRequestDto employeeRequestDto) {
+        employeeService.updateEmployee(employeeRequestDto);
     }
 }

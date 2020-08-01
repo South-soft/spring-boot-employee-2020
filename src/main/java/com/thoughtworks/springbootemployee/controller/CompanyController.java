@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -39,7 +40,7 @@ public class CompanyController {
     }
 
     @PostMapping
-    public void addCompany(@RequestBody Company company) {
+    public void addCompany(@RequestBody @Valid Company company) {
         companyService.addCompany(company);
     }
 

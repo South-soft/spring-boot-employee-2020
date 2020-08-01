@@ -1,6 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
-import com.thoughtworks.springbootemployee.dto.EmployeeDto;
+import com.thoughtworks.springbootemployee.dto.EmployeeRequestDto;
 import com.thoughtworks.springbootemployee.entity.Company;
 import com.thoughtworks.springbootemployee.entity.Employee;
 import com.thoughtworks.springbootemployee.exception.CompanyNotFoundException;
@@ -13,7 +13,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -62,15 +61,15 @@ public class EmployeeServiceTest {
     @Test
     public void should_return_1_employee_when_add_employee_given_1_employee_dto() {
         //given
-        EmployeeDto employeeDto = new EmployeeDto();
-        employeeDto.setId(1);
-        employeeDto.setName("LLL");
-        employeeDto.setAge(11);
-        employeeDto.setGender("male");
-        employeeDto.setCompanyId(1);
+        EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto();
+        employeeRequestDto.setId(1);
+        employeeRequestDto.setName("LLL");
+        employeeRequestDto.setAge(11);
+        employeeRequestDto.setGender("male");
+        employeeRequestDto.setCompanyId(1);
         when(companyRepository.findById(anyInt())).thenReturn(Optional.of(new Company()));
         //when
-        employeeService.addEmployee(employeeDto);
+        employeeService.addEmployee(employeeRequestDto);
         //then
         verify(employeeRepository, times(1)).save(any(Employee.class));
     }
@@ -78,16 +77,16 @@ public class EmployeeServiceTest {
     @Test
     public void should_throw_exception_when_add_employee_given_1_employee_dto_and_company_is_not_exist() {
         //given
-        EmployeeDto employeeDto = new EmployeeDto();
-        employeeDto.setId(1);
-        employeeDto.setName("LLL");
-        employeeDto.setAge(11);
-        employeeDto.setGender("male");
-        employeeDto.setCompanyId(1);
+        EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto();
+        employeeRequestDto.setId(1);
+        employeeRequestDto.setName("LLL");
+        employeeRequestDto.setAge(11);
+        employeeRequestDto.setGender("male");
+        employeeRequestDto.setCompanyId(1);
         when(companyRepository.findById(anyInt())).thenReturn(Optional.empty());
         //when
         CompanyNotFoundException companyNotFoundException
-                = assertThrows(CompanyNotFoundException.class, () -> employeeService.addEmployee(employeeDto), "CompanyNotFoundException");
+                = assertThrows(CompanyNotFoundException.class, () -> employeeService.addEmployee(employeeRequestDto), "CompanyNotFoundException");
         //then
         assertEquals("CompanyNotFoundException", companyNotFoundException.getMessage());
     }
@@ -95,15 +94,15 @@ public class EmployeeServiceTest {
     @Test
     public void should_return_employee_when_update_employee_given_1_employee_dto() {
         //given
-        EmployeeDto employeeDto = new EmployeeDto();
-        employeeDto.setId(1);
-        employeeDto.setName("LLL");
-        employeeDto.setAge(11);
-        employeeDto.setGender("male");
-        employeeDto.setCompanyId(1);
+        EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto();
+        employeeRequestDto.setId(1);
+        employeeRequestDto.setName("LLL");
+        employeeRequestDto.setAge(11);
+        employeeRequestDto.setGender("male");
+        employeeRequestDto.setCompanyId(1);
         when(companyRepository.findById(anyInt())).thenReturn(Optional.of(new Company()));
         //when
-        Employee updateEmployee = employeeService.updateEmployee(employeeDto);
+        Employee updateEmployee = employeeService.updateEmployee(employeeRequestDto);
         //then
         verify(employeeRepository,times(1)).save(any(Employee.class));
     }
