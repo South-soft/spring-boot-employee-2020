@@ -81,4 +81,16 @@ public class CompanyIntegration {
         List<Company> companies = companyRepository.findAll();
         assertEquals("tw", companies.get(0).getName());
     }
+
+    @Test
+    public void should_return_0_company_when_delete_company_given_1_company() throws Exception {
+        Company company = new Company();
+        company.setName("oocl");
+        Company companyAdded = companyRepository.save(company);
+
+        mockMvc.perform(delete("/companies/" + companyAdded.getCompanyId()))
+                .andExpect(status().isOk());
+        List<Company> companies = companyRepository.findAll();
+        assertEquals(0, companies.size());
+    }
 }
