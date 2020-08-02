@@ -66,4 +66,19 @@ public class CompanyIntegration {
                 .andExpect(status().isBadRequest());
     }
 
+    @Test
+    public void should_return_1_company_when_update_company_given_1_company() throws Exception {
+        Company company = new Company();
+        company.setName("oocl");
+        Company companyAdded = companyRepository.save(company);
+        String updateCompany = "{" +
+                "    \"companyId\" : "+companyAdded.getCompanyId()+",\n" +
+                "    \"name\" : \"tw\"\n" +
+                "}";
+        mockMvc.perform(put("/companies/" + companyAdded.getCompanyId())
+                .contentType(MediaType.APPLICATION_JSON).content(updateCompany))
+                .andExpect(status().isOk());
+        List<Company> companies = companyRepository.findAll();
+        assertEquals("tw", companies.get(0).getName());
+    }
 }
