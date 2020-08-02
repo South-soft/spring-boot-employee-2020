@@ -1,6 +1,7 @@
 package com.thoughtworks.springbootemployee.integrationtest;
 
 import com.thoughtworks.springbootemployee.entity.Company;
+import com.thoughtworks.springbootemployee.entity.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -92,5 +93,21 @@ public class CompanyIntegration {
                 .andExpect(status().isOk());
         List<Company> companies = companyRepository.findAll();
         assertEquals(0, companies.size());
+    }
+
+    @Test
+    public void should_return_1_employee_when_get_employee_by_company_id_given_1_company() throws Exception {
+        Company company = new Company();
+        company.setName("oocl");
+        Company companyAdded = companyRepository.save(company);
+        Employee employee = new Employee();
+        employee.setName("Lester");
+        employee.setAge(22);
+        employee.setGender("male");
+        employee.setCompany(company);
+        employeeRepository.save(employee);
+        mockMvc.perform(get("/companies/" + companyAdded.getCompanyId() + "/employees"))
+                .andExpect(jsonPath("[0].name").value("Lester"));
+
     }
 }
