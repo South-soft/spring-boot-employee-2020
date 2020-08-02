@@ -8,11 +8,15 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import javax.annotation.Resource;
+import java.util.List;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -72,5 +76,20 @@ public class EmployeeIntegrationTest {
                 .perform(get("/employees?page=1&size=1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("numberOfElements").value(1));
+    }
+
+    @Test
+    public void should_return_1_employee_when_add_employee_given_1_employee() throws Exception {
+        Company company = new Company();
+        company.setName("oocl");
+        Company companyAdded = companyRepository.save(company);
+        String employeeAdded = String
+                .format("{\"name\":\"Lester\",\"gender\":\"male\",\"age\":22,\"companyId\":%d}", companyAdded.getCompanyId());
+        mockMvc
+                .perform(
+                        post("/employees").contentType(MediaType.APPLICATION_JSON).content(employeeAdded))
+                .andExpect(status().isCreated());
+        List<Employee> employees = employeeRepository.findAll();
+        assertEquals(1, employees.size());
     }
 }
