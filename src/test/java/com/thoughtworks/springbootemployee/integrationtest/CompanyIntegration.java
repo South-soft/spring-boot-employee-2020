@@ -16,6 +16,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -45,7 +46,16 @@ public class CompanyIntegration {
 
         List<Company> companies = companyRepository.findAll();
         assertEquals(1, companies.size());
+    }
 
+    @Test
+    public void should_return_1_company_when_get_company_given_company() throws Exception {
+        Company company = new Company();
+        company.setName("oocl");
+        Company companyAdded = companyRepository.save(company);
+        mockMvc.perform(get("/companies/" + companyAdded.getCompanyId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("name").value("oocl"));
     }
 
 }
