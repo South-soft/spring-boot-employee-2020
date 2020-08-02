@@ -58,4 +58,12 @@ public class CompanyIntegration {
                 .andExpect(jsonPath("name").value("oocl"));
     }
 
+    @Test
+    public void should_return_0_company_when_get_company_given_no_company() throws Exception {
+        Company company = new Company();
+        company.setCompanyId(1);
+        mockMvc.perform(get("/companies/" + company.getCompanyId()))
+                .andExpect(status().isBadRequest());
+    }
+
 }
