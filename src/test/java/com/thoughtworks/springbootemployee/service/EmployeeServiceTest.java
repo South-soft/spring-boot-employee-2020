@@ -1,6 +1,7 @@
 package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.dto.EmployeeRequestDto;
+import com.thoughtworks.springbootemployee.dto.EmployeeResponseDto;
 import com.thoughtworks.springbootemployee.entity.Company;
 import com.thoughtworks.springbootemployee.entity.Employee;
 import com.thoughtworks.springbootemployee.exception.CompanyNotFoundException;
@@ -38,7 +39,7 @@ public class EmployeeServiceTest {
         when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employee));
 
         // when
-        Employee getEmployee = employeeService.getEmployee(employeeId);
+        EmployeeResponseDto getEmployee = employeeService.getEmployee(employeeId);
 
         // then
         assertNotNull(getEmployee);
