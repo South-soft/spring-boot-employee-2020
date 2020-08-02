@@ -50,4 +50,27 @@ public class EmployeeIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("name").value("Lester"));
     }
+
+    @Test
+    public void should_return_1_employee_when_get_employee_by_page_given_page_1_size_1() throws Exception {
+        Company company = new Company();
+        company.setName("oocl");
+        Company companyAdded = companyRepository.save(company);
+        Employee employee = new Employee();
+        employee.setName("Lester");
+        employee.setAge(22);
+        employee.setGender("male");
+        employee.setCompany(companyAdded);
+        employeeRepository.save(employee);
+        Employee employee1 = new Employee();
+        employee1.setName("Ada");
+        employee1.setAge(22);
+        employee1.setGender("female");
+        employee1.setCompany(companyAdded);
+        employeeRepository.save(employee1);
+        mockMvc
+                .perform(get("/employees?page=1&size=1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("numberOfElements").value(1));
+    }
 }
